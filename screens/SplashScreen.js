@@ -1,39 +1,36 @@
 import React from 'react';
-import { 
-    View, 
-    Text, 
-    TouchableOpacity, 
-    Dimensions,
-    StyleSheet,
-    StatusBar,
-    Image,
-    Button,
-    SafeAreaView
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  StyleSheet,
+  StatusBar,
+  Image,
+  Button,
+  SafeAreaView,
 } from 'react-native';
 
 const SplashScreen = () => {
   return (
     <SafeAreaView>
-    <View style = {styles.container}>
-      <Text>Splash Screen</Text>
-      <Button
-      title = "Click Me"
-      onPress = {() => alert('Button Clicked!')}
-      />
-    </View>
+      <View style={styles.container}>
+        <Text>Splash Screen</Text>
+        <Button title="Click Me" onPress={() => alert('Button Clicked!')} />
+      </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
+    justifyContent: 'center',
+  },
+});
 
-export default SplashScreen
+export default SplashScreen;
 // import * as Animatable from 'react-native-animatable';
 // import LinearGradient from 'react-native-linear-gradient';
 // import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -46,7 +43,7 @@ export default SplashScreen
 //       <View style={styles.container}>
 //           <StatusBar backgroundColor='#009387' barStyle="light-content"/>
 //         <View style={styles.header}>
-//             <Animatable.Image 
+//             <Animatable.Image
 //                 animation="bounceIn"
 //                 duraton="1500"
 //             source={require('../assets/logo.png')}
@@ -54,7 +51,7 @@ export default SplashScreen
 //             resizeMode="stretch"
 //             />
 //         </View>
-//         <Animatable.View 
+//         <Animatable.View
 //             style={[styles.footer, {
 //                 backgroundColor: colors.background
 //             }]}
@@ -71,7 +68,7 @@ export default SplashScreen
 //                     style={styles.signIn}
 //                 >
 //                     <Text style={styles.textSign}>Get Started</Text>
-//                     <MaterialIcons 
+//                     <MaterialIcons
 //                         name="navigate-next"
 //                         color="#fff"
 //                         size={20}
@@ -91,7 +88,7 @@ export default SplashScreen
 
 // const styles = StyleSheet.create({
 //   container: {
-//     flex: 1, 
+//     flex: 1,
 //     backgroundColor: '#009387'
 //   },
 //   header: {
