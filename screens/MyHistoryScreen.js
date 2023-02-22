@@ -4,7 +4,7 @@ import {ScrollView, View, StyleSheet, Text, Image} from 'react-native';
 export default function MyApplicationsScreen({navigation}) {
   const jobs = [
     {
-      companyLogo: require('./../assets/76ers.png'),
+      companyLogo: require('./../assets/horse.png'),
       companyName: 'ABC Company',
       jobRole: 'Senior Level Product Designer',
       location: 'United Arab Emirates',
@@ -17,7 +17,7 @@ export default function MyApplicationsScreen({navigation}) {
         'Photoshop',
         'inVision',
       ],
-      postedAt: 'Applied 3 days ago',
+      postedAt: '25 days ago',
     },
     {
       companyLogo: require('../assets/volks.png'),
@@ -32,7 +32,7 @@ export default function MyApplicationsScreen({navigation}) {
         'Photoshop',
         'inVision',
       ],
-      postedAt: 'Applied 4 days ago',
+      postedAt: '12 days ago',
     },
     {
       companyLogo: require('../assets/bondStreet.png'),
@@ -41,16 +41,64 @@ export default function MyApplicationsScreen({navigation}) {
       location: 'Jamaica',
       salary: '1,500,000.00',
       skills: ['Javascript', 'Vue js', 'React Js', 'Photoshop', 'inVision'],
-      postedAt: 'Applied 8 days ago',
+      postedAt: '30 days ago',
     },
     {
-      companyLogo: require('../assets/nu.png'),
+      companyLogo: require('../assets/bmw.png'),
       companyName: 'JKLM Company',
       jobRole: 'Junior Level Software Developer',
       location: 'South Africa',
       salary: '500,000.00',
       skills: ['Javascript', 'Vue js', 'React Js', 'Photoshop'],
-      postedAt: 'Applied 12 days ago',
+      postedAt: '1 month ago',
+    },
+    {
+      companyLogo: require('./../assets/76ers.png'),
+      companyName: 'ABC Company',
+      jobRole: 'Senior Level Product Designer',
+      location: 'United Arab Emirates',
+      salary: '1,000,000.00',
+      skills: [
+        'Figma',
+        'Sketch',
+        'Adobe XD',
+        'illustrator',
+        'Photoshop',
+        'inVision',
+      ],
+      postedAt: '6 days ago',
+    },
+    {
+      companyLogo: require('./../assets/mensLeague.png'),
+      companyName: 'ABC Company',
+      jobRole: 'Senior Level Product Designer',
+      location: 'United Arab Emirates',
+      salary: '1,000,000.00',
+      skills: [
+        'Figma',
+        'Sketch',
+        'Adobe XD',
+        'illustrator',
+        'Photoshop',
+        'inVision',
+      ],
+      postedAt: '28 days ago',
+    },
+    {
+      companyLogo: require('./../assets/hyundai.png'),
+      companyName: 'ABC Company',
+      jobRole: 'Senior Level Product Designer',
+      location: 'United Arab Emirates',
+      salary: '1,000,000.00',
+      skills: [
+        'Figma',
+        'Sketch',
+        'Adobe XD',
+        'illustrator',
+        'Photoshop',
+        'inVision',
+      ],
+      postedAt: '23 days ago',
     },
   ];
   const listJobs = [];
@@ -72,7 +120,7 @@ export default function MyApplicationsScreen({navigation}) {
       <View key={index} style={styles.box}>
         <View style={styles.logoArea}>
           <Image
-            // source={{uri: job.companyLogo}}
+            // source={{uri: job.img}}
             source={job.companyLogo}
             style={styles.png}
             resizeMode="contain"

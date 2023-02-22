@@ -11,7 +11,9 @@ import AccountCreatedScreen from './AccountCreatedScreen';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
 import ChangePasswordScreen from './ChangePasswordScreen';
 import NewPassCreatedScreen from './NewPassCreatedScreen';
+
 import {SafeAreaView, Text} from 'react-native';
+import BottomStackScreen from './BottonStackScreen';
 
 const StackScreen = ({navigation}) => (
   <Navigator headerMode="none">
@@ -23,6 +25,7 @@ const StackScreen = ({navigation}) => (
     <Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
     <Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
     <Screen name="NewPassCreatedScreen" component={NewPassCreatedScreen} />
+    <Screen name="BottomStackScreen" component={BottomStackScreen} />
   </Navigator>
 );
 
