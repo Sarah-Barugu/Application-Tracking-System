@@ -7,201 +7,162 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
+import {Formik} from 'formik';
+import * as yup from 'yup';
 
 import Eye from '../assets/eye.png';
 import EyeActive from '../assets/eye-crossed.png';
 
-export default function SignInScreen({navigation}) {
-  const [emailAddress, setEmailAddress] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [seePassword, setSeePassword] = useState(true);
-  const [seeConfirmPassword, setSeeConfirmPassword] = useState(true);
-  const [checkValidEmail, setCheckValidEmail] = useState(false);
+const signUpValidationSchema = yup.object().shape({
+  emailAddress: yup
+    .string()
+    .email('please enter valid email')
+    .required('email address is required'),
+  password: yup
+    .string()
+    .min(6, ({min}) => `Password must be at least ${min} characters`)
+    .required('Password is required')
+    .matches(
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/,
+      'Must Contain at least 6 Characters,  one numeric digit, one uppercase and one lowercase letter,',
+    ),
+  confirmPassword: yup
+    .string()
+    .test('passwords-match', 'Password must match', function (value) {
+      return this.parent.password === value;
+    }),
+});
 
-  const handleCheckEmail = text => {
-    let re = /\S+@\S+\.\S+/;
-    let regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-
-    setEmailAddress(text);
-    if (re.test(text) || regex.test(text)) {
-      setCheckValidEmail(false);
-    } else {
-      setCheckValidEmail(true);
-    }
-  };
-
-  const checkPasswordValidity = value => {
-    const isNonWhiteSpace = /^\S*$/;
-    if (!isNonWhiteSpace.test(value)) {
-      return 'Password must not contain Whitespaces.';
-    }
-
-    const isContainsUppercase = /^(?=.*[A-Z]).*$/;
-    if (!isContainsUppercase.test(value)) {
-      return 'Password must have at least one Uppercase Character.';
-    }
-
-    const isContainsLowercase = /^(?=.*[a-z]).*$/;
-    if (!isContainsLowercase.test(value)) {
-      return 'Password must have at least one Lowercase Character.';
-    }
-
-    const isContainsNumber = /^(?=.*[0-9]).*$/;
-    if (!isContainsNumber.test(value)) {
-      return 'Password must contain at least one Digit.';
-    }
-
-    const isValidLength = /^.{8,16}$/;
-    if (!isValidLength.test(value)) {
-      return 'Password must be 5-16 Characters Long.';
-    }
-
-    return null;
-  };
-
-  //   // Send data to server to create new user account
-  //   try {
-  //     const response = await fetch('http://your-server.com/signup', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({emailAddress, password, confirmPassword}),
-  //     });
-
-  //     // Handle server response
-  //     const data = await response.json();
-  //     if (response.status === 201) {
-  //       alert('Sign up successful!');
-  //       // Store user data locally
-  //     } else {
-  //       alert(`Error: ${data.message}`);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  const handleSignUp = () => {
-    const checkPassword = checkPasswordValidity(password, confirmPassword);
-    if (!checkPassword) {
-      Alert('Account Created');
-      navigation.navigate('AccountCreatedScreen');
-    } else {
-      Alert(checkPassword);
-    }
-  };
+export default function SignUpScreen({navigation}) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
-    <SafeAreaView style={{backgroundColor: '#fff'}}>
-      <View style={styles.container}>
-        <View style={{width}}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.backNav}>
-            <Image
-              source={require('../assets/back.png')}
-              style={styles.png}
-              resizeMode="contain"
-            />
-            <Text style={styles.icon}>Back</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.title}>Sign Up</Text>
-        <View>
-          <Text style={styles.inputText}>
-            Email Address{' '}
-            <Text style={{...styles.inputText, color: 'red'}}>*</Text>{' '}
-          </Text>
-          <TextInput
-            style={styles.inputContainer}
-            placeholder="Email Address"
-            value={emailAddress}
-            onChangeText={text => handleCheckEmail(text)}
-          />
-          {checkValidEmail ? (
-            <Text style={styles.textFailed}>Wrong format email</Text>
-          ) : (
-            <Text style={styles.textFailed}> </Text>
-          )}
-        </View>
-        <View>
-          <Text style={styles.inputText}>
-            Password <Text style={{...styles.inputText, color: 'red'}}>*</Text>{' '}
-          </Text>
-          <View>
-            <TextInput
-              style={styles.inputContainer}
-              placeholder="Password"
-              secureTextEntry={seePassword}
-              value={password}
-              onChangeText={text => setPassword(text)}
-            />
-            <TouchableOpacity
-              style={styles.wrapperIcon}
-              onPress={() => setSeePassword(!seePassword)}>
-              <Image
-                source={seePassword ? Eye : EyeActive}
-                style={styles.icon}
+    <Formik
+      initialValues={{emailAddress: '', password: '', confirmPassword: ''}}
+      validateOnMount={true}
+      onSubmit={() => navigation.navigate('AccountCreatedScreen')}
+      validationSchema={signUpValidationSchema}>
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        touched,
+        errors,
+        isValid,
+      }) => (
+        <SafeAreaView style={{backgroundColor: '#fff'}}>
+          <View style={styles.container}>
+            <View style={{width}}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={styles.backNav}>
+                <Image
+                  source={require('../assets/back.png')}
+                  style={styles.png}
+                  resizeMode="contain"
+                />
+                <Text style={styles.icon}>Back</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.title}>Sign Up</Text>
+            <View>
+              <Text style={styles.inputText}>
+                Email Address{' '}
+                <Text style={{...styles.inputText, color: 'red'}}>*</Text>{' '}
+              </Text>
+              <TextInput
+                style={styles.inputContainer}
+                placeholder="Email Address"
+                onChangeText={handleChange('emailAddress')}
+                onBlur={handleBlur('emailAddress')}
+                value={values.emailAddress}
               />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View>
-          <Text style={styles.inputText}>
-            Confirm Password{' '}
-            <Text style={{...styles.inputText, color: 'red'}}>*</Text>{' '}
-          </Text>
-          <View>
-            <TextInput
-              style={styles.inputContainer}
-              placeholder="Confirm Password"
-              secureTextEntry={seeConfirmPassword}
-              value={confirmPassword}
-              onChangeText={text => setConfirmPassword(text)}
-            />
+            </View>
+            {errors.emailAddress && touched.emailAddress && (
+              <Text style={styles.textFailed}>{errors.emailAddress}</Text>
+            )}
+            <View>
+              <Text style={styles.inputText}>
+                Password{' '}
+                <Text style={{...styles.inputText, color: 'red'}}>*</Text>
+              </Text>
+              <View>
+                <TextInput
+                  value={values.password}
+                  style={styles.inputContainer}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  placeholder="Password"
+                  secureTextEntry={!showPassword}
+                />
+                <TouchableOpacity
+                  style={styles.wrapperIcon}
+                  onPress={() => setShowPassword(!showPassword)}>
+                  <Image
+                    source={showPassword ? Eye : EyeActive}
+                    style={styles.icon}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+            {errors.password && touched.password && (
+              <Text style={styles.textFailed}>{errors.password}</Text>
+            )}
+            <View>
+              <Text style={styles.inputText}>
+                Confirm Password{' '}
+                <Text style={{...styles.inputText, color: 'red'}}>*</Text>{' '}
+              </Text>
+              <View>
+                <TextInput
+                  style={styles.inputContainer}
+                  placeholder="Confirm Password"
+                  secureTextEntry={!showConfirmPassword}
+                  value={values.confirmPassword}
+                  onChangeText={handleChange('confirmPassword')}
+                />
+                <TouchableOpacity
+                  style={styles.wrapperIcon}
+                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                  <Image
+                    source={showConfirmPassword ? Eye : EyeActive}
+                    style={styles.icon}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+            {errors.confirmPassword && touched.confirmPassword && (
+              <Text style={styles.textFailed}>{errors.confirmPassword}</Text>
+            )}
             <TouchableOpacity
-              style={styles.wrapperIcon}
-              onPress={() => setSeeConfirmPassword(!seeConfirmPassword)}>
-              <Image
-                source={seeConfirmPassword ? Eye : EyeActive}
-                style={styles.icon}
-              />
+              disabled={!isValid}
+              onPress={() => {
+                handleSubmit();
+              }}
+              style={[
+                styles.btn,
+                {backgroundColor: isValid ? '#440F7C' : 'grey'},
+              ]}>
+              <Text style={styles.textSign}>Sign Up</Text>
             </TouchableOpacity>
-          </View>
-        </View>
 
-        {emailAddress == '' ||
-        password == '' ||
-        confirmPassword == '' ||
-        checkValidEmail == true ? (
-          <TouchableOpacity
-            disabled
-            style={styles.buttonDisable}
-            onPress={handleSignUp}>
-            <Text style={styles.textSign}>Sign Up</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('AccountCreatedScreen')}
-            style={styles.btn}>
-            <Text style={styles.textSign}>Sign Up</Text>
-          </TouchableOpacity>
-        )}
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.textProperty}>Already have an account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SignInScreen')}>
-            <Text style={{...styles.textProperty, color: '#D62196'}}>
-              Sign In
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={styles.textProperty}>Already have an account?</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('SignInScreen')}>
+                <Text style={{...styles.textProperty, color: '#D62196'}}>
+                  Sign In
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </SafeAreaView>
+      )}
+    </Formik>
   );
 }
 
@@ -263,8 +224,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   textFailed: {
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     color: 'red',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   icon: {
     width: 30,
