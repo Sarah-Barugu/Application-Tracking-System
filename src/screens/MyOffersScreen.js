@@ -1,10 +1,17 @@
 import React from 'react';
-import {ScrollView, View, StyleSheet, Text, Image} from 'react-native';
+import {
+  ScrollView,
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 
-export default function MyApplicationsScreen({navigation}) {
+export default function MyOffersScreen({navigation}) {
   const jobs = [
     {
-      companyLogo: require('./../assets/76ers.png'),
+      companyLogo: require('../assets/volks.png'),
       companyName: 'ABC Company',
       jobRole: 'Senior Level Product Designer',
       location: 'United Arab Emirates',
@@ -17,40 +24,14 @@ export default function MyApplicationsScreen({navigation}) {
         'Photoshop',
         'inVision',
       ],
-      postedAt: 'Applied 3 days ago',
     },
     {
-      companyLogo: require('../assets/volks.png'),
-      companyName: 'DEF Company',
-      jobRole: 'Senior Software Developer',
-      location: 'USA',
-      salary: '1,500,000.00',
-      skills: [
-        'React Js',
-        'React Native',
-        'illustrator',
-        'Photoshop',
-        'inVision',
-      ],
-      postedAt: 'Applied 4 days ago',
-    },
-    {
-      companyLogo: require('../assets/bondStreet.png'),
-      companyName: 'GHI Company',
-      jobRole: 'Mid Level Software Developer',
-      location: 'Jamaica',
-      salary: '1,500,000.00',
-      skills: ['Javascript', 'Vue js', 'React Js', 'Photoshop', 'inVision'],
-      postedAt: 'Applied 8 days ago',
-    },
-    {
-      companyLogo: require('../assets/nu.png'),
+      companyLogo: require('../assets/hyundai.png'),
       companyName: 'JKLM Company',
       jobRole: 'Junior Level Software Developer',
       location: 'South Africa',
       salary: '500,000.00',
       skills: ['Javascript', 'Vue js', 'React Js', 'Photoshop'],
-      postedAt: 'Applied 12 days ago',
     },
   ];
   const listJobs = [];
@@ -72,7 +53,7 @@ export default function MyApplicationsScreen({navigation}) {
       <View key={index} style={styles.box}>
         <View style={styles.logoArea}>
           <Image
-            // source={{uri: job.companyLogo}}
+            // source={{uri: job.img}}
             source={job.companyLogo}
             style={styles.png}
             resizeMode="contain"
@@ -96,7 +77,18 @@ export default function MyApplicationsScreen({navigation}) {
           </View>
         </View>
         <View style={styles.grid4}>{listSkills}</View>
-        <Text style={styles.time}>{job.postedAt}</Text>
+        <View>
+          <TouchableOpacity onPress={() => {}} style={styles.btn}>
+            <View style={styles.action}>
+              <Text style={styles.time}>Actions</Text>
+              <Image
+                source={require('../assets/arrowDown.png')}
+                style={styles.drop}
+                resizeMode="contain"
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>,
     );
   }
@@ -184,5 +176,28 @@ const styles = StyleSheet.create({
     color: '#152536',
     fontSize: 13,
     paddingTop: 7,
+  },
+  time: {
+    color: '#440F7C',
+    fontSize: 16,
+    paddingTop: 3,
+  },
+  btn: {
+    backgroundColor: '#DACFE5',
+    // height: 40,
+    // width: 270,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  action: {
+    flexDirection: 'row',
+    padding: 5,
+  },
+  drop: {
+    width: 30,
+    height: 10,
+    marginTop: 8,
   },
 });

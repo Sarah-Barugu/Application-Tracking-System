@@ -1,10 +1,10 @@
 import React from 'react';
 import {ScrollView, View, StyleSheet, Text, Image} from 'react-native';
 
-export default function JobsScreen({navigation}) {
+export default function MyApplicationsScreen({navigation}) {
   const jobs = [
     {
-      companyLogo: require('./../assets/76ers.png'),
+      companyLogo: require('../assets/76ers.png'),
       companyName: 'ABC Company',
       jobRole: 'Senior Level Product Designer',
       location: 'United Arab Emirates',
@@ -17,10 +17,10 @@ export default function JobsScreen({navigation}) {
         'Photoshop',
         'inVision',
       ],
-      postedAt: 'Posted 8 hours ago',
+      postedAt: 'Applied 3 days ago',
     },
     {
-      companyLogo: require('../assets/fendi.png'),
+      companyLogo: require('../assets/volks.png'),
       companyName: 'DEF Company',
       jobRole: 'Senior Software Developer',
       location: 'USA',
@@ -32,25 +32,25 @@ export default function JobsScreen({navigation}) {
         'Photoshop',
         'inVision',
       ],
-      postedAt: 'Posted 2 hours ago',
+      postedAt: 'Applied 4 days ago',
     },
     {
-      companyLogo: require('../assets/manUtd.png'),
+      companyLogo: require('../assets/bondStreet.png'),
       companyName: 'GHI Company',
       jobRole: 'Mid Level Software Developer',
       location: 'Jamaica',
       salary: '1,500,000.00',
       skills: ['Javascript', 'Vue js', 'React Js', 'Photoshop', 'inVision'],
-      postedAt: 'Posted 4 hours ago',
+      postedAt: 'Applied 8 days ago',
     },
     {
-      companyLogo: require('../assets/hyundai.png'),
+      companyLogo: require('../assets/nu.png'),
       companyName: 'JKLM Company',
       jobRole: 'Junior Level Software Developer',
       location: 'South Africa',
       salary: '500,000.00',
       skills: ['Javascript', 'Vue js', 'React Js', 'Photoshop'],
-      postedAt: 'Posted 30 minute ago',
+      postedAt: 'Applied 12 days ago',
     },
   ];
   const listJobs = [];

@@ -43,7 +43,7 @@ export default function Searchbar({value, updateSearch, style}) {
           <TouchableOpacity onPress={() => setQuery('')} style={styles.vwClear}>
             <Image
               style={styles.icClear}
-              source={require('../../assets/images/ic_clear.png')}
+              source={require('../assets/images/ic_clear.png')}
             />
           </TouchableOpacity>
         ) : (

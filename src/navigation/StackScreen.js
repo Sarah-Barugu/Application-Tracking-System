@@ -3,19 +3,19 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 const {Navigator, Screen} = createStackNavigator();
 
-import SplashScreen from './SplashScreen';
-import SignInScreen from './SignInScreen';
-import SignUpScreen from './SignUpScreen';
-import ResetLinkScreen from './ResetLinkScreen';
-import AccountCreatedScreen from './AccountCreatedScreen';
-import ForgotPasswordScreen from './ForgotPasswordScreen';
-import ChangePasswordScreen from './ChangePasswordScreen';
-import NewPassCreatedScreen from './NewPassCreatedScreen';
+import BottomStackScreen from './BottomStackScreen';
+import {
+  AccountCreatedScreen,
+  ChangePasswordScreen,
+  ForgotPasswordScreen,
+  NewPassCreatedScreen,
+  ResetLinkScreen,
+  SignInScreen,
+  SplashScreen,
+} from '../screens';
+import SignUpScreen from '../screens/SignUpScreen';
 
-import {SafeAreaView, Text} from 'react-native';
-import BottomStackScreen from './BottonStackScreen';
-
-const StackScreen = ({navigation}) => (
+const StackScreen = () => (
   <Navigator headerMode="none">
     <Screen name="SplashScreen" component={SplashScreen} />
     <Screen name="SignInScreen" component={SignInScreen} />

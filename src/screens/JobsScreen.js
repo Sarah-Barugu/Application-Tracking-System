@@ -1,10 +1,10 @@
 import React from 'react';
 import {ScrollView, View, StyleSheet, Text, Image} from 'react-native';
 
-export default function MyApplicationsScreen({navigation}) {
+export default function JobsScreen({navigation}) {
   const jobs = [
     {
-      companyLogo: require('./../assets/horse.png'),
+      companyLogo: require('../assets/76ers.png'),
       companyName: 'ABC Company',
       jobRole: 'Senior Level Product Designer',
       location: 'United Arab Emirates',
@@ -17,10 +17,10 @@ export default function MyApplicationsScreen({navigation}) {
         'Photoshop',
         'inVision',
       ],
-      postedAt: '25 days ago',
+      postedAt: 'Posted 8 hours ago',
     },
     {
-      companyLogo: require('../assets/volks.png'),
+      companyLogo: require('../assets/fendi.png'),
       companyName: 'DEF Company',
       jobRole: 'Senior Software Developer',
       location: 'USA',
@@ -32,73 +32,25 @@ export default function MyApplicationsScreen({navigation}) {
         'Photoshop',
         'inVision',
       ],
-      postedAt: '12 days ago',
+      postedAt: 'Posted 2 hours ago',
     },
     {
-      companyLogo: require('../assets/bondStreet.png'),
+      companyLogo: require('../assets/manUtd.png'),
       companyName: 'GHI Company',
       jobRole: 'Mid Level Software Developer',
       location: 'Jamaica',
       salary: '1,500,000.00',
       skills: ['Javascript', 'Vue js', 'React Js', 'Photoshop', 'inVision'],
-      postedAt: '30 days ago',
+      postedAt: 'Posted 4 hours ago',
     },
     {
-      companyLogo: require('../assets/bmw.png'),
+      companyLogo: require('../assets/hyundai.png'),
       companyName: 'JKLM Company',
       jobRole: 'Junior Level Software Developer',
       location: 'South Africa',
       salary: '500,000.00',
       skills: ['Javascript', 'Vue js', 'React Js', 'Photoshop'],
-      postedAt: '1 month ago',
-    },
-    {
-      companyLogo: require('./../assets/76ers.png'),
-      companyName: 'ABC Company',
-      jobRole: 'Senior Level Product Designer',
-      location: 'United Arab Emirates',
-      salary: '1,000,000.00',
-      skills: [
-        'Figma',
-        'Sketch',
-        'Adobe XD',
-        'illustrator',
-        'Photoshop',
-        'inVision',
-      ],
-      postedAt: '6 days ago',
-    },
-    {
-      companyLogo: require('./../assets/mensLeague.png'),
-      companyName: 'ABC Company',
-      jobRole: 'Senior Level Product Designer',
-      location: 'United Arab Emirates',
-      salary: '1,000,000.00',
-      skills: [
-        'Figma',
-        'Sketch',
-        'Adobe XD',
-        'illustrator',
-        'Photoshop',
-        'inVision',
-      ],
-      postedAt: '28 days ago',
-    },
-    {
-      companyLogo: require('./../assets/hyundai.png'),
-      companyName: 'ABC Company',
-      jobRole: 'Senior Level Product Designer',
-      location: 'United Arab Emirates',
-      salary: '1,000,000.00',
-      skills: [
-        'Figma',
-        'Sketch',
-        'Adobe XD',
-        'illustrator',
-        'Photoshop',
-        'inVision',
-      ],
-      postedAt: '23 days ago',
+      postedAt: 'Posted 30 minute ago',
     },
   ];
   const listJobs = [];
@@ -120,7 +72,7 @@ export default function MyApplicationsScreen({navigation}) {
       <View key={index} style={styles.box}>
         <View style={styles.logoArea}>
           <Image
-            // source={{uri: job.img}}
+            // source={{uri: job.companyLogo}}
             source={job.companyLogo}
             style={styles.png}
             resizeMode="contain"

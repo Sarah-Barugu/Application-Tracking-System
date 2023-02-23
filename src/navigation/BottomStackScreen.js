@@ -4,11 +4,11 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
-import MyApplications from './MyApplicationsScreen';
-import MyOffers from './MyOffersScreen';
-import Jobs from './JobsScreen';
-import MyProfile from './MyProfileScreen';
-import MyHistory from './MyHistoryScreen';
+import MyApplications from '../screens/MyApplicationsScreen';
+import MyOffers from '../screens/MyOffersScreen';
+import Jobs from '../screens/JobsScreen';
+import MyProfile from '../screens/MyProfileScreen';
+import MyHistory from '../screens/MyHistoryScreen';
 import {Image} from 'react-native';
 
 const size = 23;
