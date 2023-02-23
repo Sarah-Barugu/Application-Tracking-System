@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   View,
@@ -7,10 +7,16 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-// import {Modals} from '../components';
+import {AppModal} from '../components';
 
 export default function MyProfileScreen({navigation}) {
   const percent = 0.356;
+  const [isVisible, setIsVisible] = useState(false);
+  const [contentType, setContentType] = useState('NotBarrs');
+
+  const handleModal = () => {
+    setIsVisible(!isVisible);
+  };
   return (
     <>
       <ScrollView contentContainerStyle={styles.container}>
@@ -37,14 +43,14 @@ export default function MyProfileScreen({navigation}) {
         <View style={styles.box}>
           <View style={styles.top}>
             <Text style={{color: '#5E5873', fontSize: 23}}>Information</Text>
-            <View style={styles.edit}>
+            <TouchableOpacity onPress={handleModal} style={styles.edit}>
               <Image
                 source={require('../assets/edit.png')}
                 style={styles.icon}
                 resizeMode="contain"
               />
               <Text style={{color: '#D62196'}}> edit</Text>
-            </View>
+            </TouchableOpacity>
           </View>
           <View>
             <Image
@@ -234,6 +240,18 @@ export default function MyProfileScreen({navigation}) {
           </View>
         </View>
       </ScrollView>
+      <AppModal isVisible={isVisible} onBackdropPress={handleModal}>
+        {contentType == 'Barrs' && (
+          <View style={styles.profileEdit}>
+            <Text>Sarah Barrs</Text>
+          </View>
+        )}
+        {contentType == 'NotBarrs' && (
+          <View style={styles.profileEdit}>
+            <Text> Mofeeee</Text>
+          </View>
+        )}
+      </AppModal>
     </>
   );
 }
@@ -249,6 +267,14 @@ const styles = StyleSheet.create({
     marginVertical: 9,
     // borderWidth: 1,
     // borderColor: 'black',
+  },
+  profileEdit: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#fff',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 16,
