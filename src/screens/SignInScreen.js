@@ -1,4 +1,3 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   Text,
@@ -14,7 +13,6 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 import Eye from '../assets/eye.png';
 import EyeActive from '../assets/eye-crossed.png';
-import MyApplicationsScreen from './MyApplicationsScreen';
 
 const loginValidationSchema = yup.object().shape({
   emailAddress: yup
@@ -79,6 +77,7 @@ export default function SignInScreen({navigation}) {
                   onBlur={handleBlur('emailAddress')}
                   value={values.emailAddress}
                   placeholder="Email Address"
+                  autoCapitalize="none"
                 />
               </View>
             </View>
@@ -224,6 +223,7 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 14,
     fontWeight: 'bold',
+    marginTop: 5,
   },
   icon: {
     width: 30,
