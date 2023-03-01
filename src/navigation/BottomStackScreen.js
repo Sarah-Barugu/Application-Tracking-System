@@ -9,6 +9,7 @@ import MyOffers from '../screens/MyOffersScreen';
 import Jobs from '../screens/JobsScreen';
 import MyProfile from '../screens/MyProfileScreen';
 import MyHistory from '../screens/MyHistoryScreen';
+
 import {Image} from 'react-native';
 
 const size = 23;

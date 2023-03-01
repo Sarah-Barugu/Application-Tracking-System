@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   View,
@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import {AppModal} from '../components';
 
 export default function MyOffersScreen({navigation}) {
   const jobs = [
@@ -78,7 +79,12 @@ export default function MyOffersScreen({navigation}) {
         </View>
         <View style={styles.grid4}>{listSkills}</View>
         <View>
-          <TouchableOpacity onPress={() => {}} style={styles.btn}>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => {
+              handleModal();
+              setContentType('Filter');
+            }}>
             <View style={styles.action}>
               <Text style={styles.time}>Actions</Text>
               <Image
@@ -92,8 +98,34 @@ export default function MyOffersScreen({navigation}) {
       </View>,
     );
   }
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [contentType, setContentType] = useState('Filter');
+
+  const handleModal = () => {
+    setIsVisible(!isVisible);
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>{listJobs}</ScrollView>
+    <>
+      <ScrollView contentContainerStyle={styles.container}>
+        {listJobs}
+      </ScrollView>
+      <AppModal isVisible={isVisible} onBackdropPress={handleModal}>
+        {contentType == 'Filter' && (
+          <View style={styles.profileEdit}>
+            <View style={{marginLeft: 10}}>
+              <View style={{marginTop: 10}}>
+                <Text>ACCEPT OFFER </Text>
+              </View>
+              <View style={{marginTop: 10}}>
+                <Text> REJECT OFFER </Text>
+              </View>
+            </View>
+          </View>
+        )}
+      </AppModal>
+    </>
   );
 }
 
@@ -199,5 +231,11 @@ const styles = StyleSheet.create({
     width: 30,
     height: 10,
     marginTop: 8,
+  },
+  profileEdit: {
+    width: '50%',
+    height: '30%',
+    backgroundColor: '#fff',
+    alignSelf: 'center',
   },
 });

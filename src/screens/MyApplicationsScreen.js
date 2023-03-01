@@ -1,109 +1,145 @@
-import React from 'react';
-import {ScrollView, View, StyleSheet, Text, Image} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  ScrollView,
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import moment from 'moment';
+import {getAppliedJobs} from '../actions/appliedJobs';
+import {AppModal} from '../components';
 
 export default function MyApplicationsScreen({navigation}) {
-  const jobs = [
-    {
-      companyLogo: require('../assets/76ers.png'),
-      companyName: 'ABC Company',
-      jobRole: 'Senior Level Product Designer',
-      location: 'United Arab Emirates',
-      salary: '1,000,000.00',
-      skills: [
-        'Figma',
-        'Sketch',
-        'Adobe XD',
-        'illustrator',
-        'Photoshop',
-        'inVision',
-      ],
-      postedAt: 'Applied 3 days ago',
-    },
-    {
-      companyLogo: require('../assets/volks.png'),
-      companyName: 'DEF Company',
-      jobRole: 'Senior Software Developer',
-      location: 'USA',
-      salary: '1,500,000.00',
-      skills: [
-        'React Js',
-        'React Native',
-        'illustrator',
-        'Photoshop',
-        'inVision',
-      ],
-      postedAt: 'Applied 4 days ago',
-    },
-    {
-      companyLogo: require('../assets/bondStreet.png'),
-      companyName: 'GHI Company',
-      jobRole: 'Mid Level Software Developer',
-      location: 'Jamaica',
-      salary: '1,500,000.00',
-      skills: ['Javascript', 'Vue js', 'React Js', 'Photoshop', 'inVision'],
-      postedAt: 'Applied 8 days ago',
-    },
-    {
-      companyLogo: require('../assets/nu.png'),
-      companyName: 'JKLM Company',
-      jobRole: 'Junior Level Software Developer',
-      location: 'South Africa',
-      salary: '500,000.00',
-      skills: ['Javascript', 'Vue js', 'React Js', 'Photoshop'],
-      postedAt: 'Applied 12 days ago',
-    },
-  ];
-  const listJobs = [];
+  const [jobs, setJobs] = useState([]);
+  const [filteredJobs, setFilteredJobs] = useState([]);
 
-  for (let index = 0; index < jobs.length; index++) {
-    const job = jobs[index];
-    const skills = job.skills;
-    const listSkills = [];
-    for (let index2 = 0; index2 < skills.length; index2++) {
-      const skill = skills[index2];
+  const [isVisible, setIsVisible] = useState(false);
+  const [contentType, setContentType] = useState('Filter');
 
-      listSkills.push(
-        <Text key={index2} style={styles.skills}>
-          {skill}
-        </Text>,
-      );
-    }
-    listJobs.push(
-      <View key={index} style={styles.box}>
-        <View style={styles.logoArea}>
-          <Image
-            // source={{uri: job.companyLogo}}
-            source={job.companyLogo}
-            style={styles.png}
-            resizeMode="contain"
-          />
-          <View styles={styles.logoAreaText}>
-            <Text style={styles.title}>{job.companyName}</Text>
-            <Text style={styles.role}>{job.jobRole}</Text>
-          </View>
-        </View>
-        <View style={styles.boxDirection}>
-          <View style={styles.miniBoxes}>
+  const handleModal = () => {
+    setIsVisible(!isVisible);
+  };
+
+  const handleSearch = text => {
+    const filtered = jobs.filter(job => {
+      const title = job.companyName.toLowerCase();
+      const searchTerm = text.toLowerCase();
+      return title.includes(searchTerm);
+    });
+    setFilteredJobs(filtered);
+  };
+
+  const fetchData = async () => {
+    const jobsData = await getAppliedJobs();
+    console.log('We got jobs for you', jobsData.data);
+    setJobs(jobsData.data);
+    setFilteredJobs(jobsData.data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return (
+    <>
+      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+        <TextInput
+          style={styles.workInput}
+          placeholder="Search Here"
+          onChangeText={text => handleSearch(text)}
+        />
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => {
+            handleModal();
+            setContentType('Filter');
+          }}>
+          <View style={styles.action}>
+            <Text style={styles.time}>Filter</Text>
             <Image
-              source={require('../assets/map-pin.png')}
-              style={styles.icon}
+              source={require('../assets/arrowDown.png')}
+              style={styles.drop}
               resizeMode="contain"
             />
-            <Text style={styles.content}>{job.location}</Text>
           </View>
-          <View style={styles.miniBoxes}>
-            <Text style={styles.content}>&#8358; {job.salary}</Text>
+        </TouchableOpacity>
+      </View>
+      <FlatList
+        data={filteredJobs}
+        // keyExtractor={item => item.id.toString()}
+        renderItem={({item}) => (
+          <TouchableOpacity>
+            <View style={styles.box}>
+              <View style={styles.logoArea}>
+                <Image
+                  source={{uri: item.companyLogo}}
+                  style={styles.png}
+                  resizeMode="contain"
+                />
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                  }}></View>
+                <View styles={styles.logoAreaText}>
+                  <Text style={styles.title}>{item.companyName}</Text>
+                  <Text style={styles.role}>{item.jobRole}</Text>
+                </View>
+              </View>
+              <View style={styles.boxDirection}>
+                <View style={styles.miniBoxes}>
+                  <Image
+                    source={require('../assets/map-pin.png')}
+                    style={styles.icon}
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.content}>{item.location}</Text>
+                </View>
+                <View style={styles.miniBoxes}>
+                  <Text style={styles.content}>&#8358; {item.salary}</Text>
+                </View>
+              </View>
+              <View style={styles.grid4}>
+                {item.skills.map(skill => (
+                  <View>
+                    <Text style={styles.skills}>{skill}</Text>
+                  </View>
+                ))}
+              </View>
+              <Text style={styles.time}>
+                {moment(item.postedAt, 'YYYYMMDD').startOf('day').fromNow()}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+      <AppModal isVisible={isVisible} onBackdropPress={handleModal}>
+        {contentType == 'Filter' && (
+          <View style={styles.profileEdit}>
+            <View style={{marginLeft: 10}}>
+              <View style={{marginTop: 10}}>
+                <Text>Junior Developer </Text>
+              </View>
+              <View style={{marginTop: 10}}>
+                <Text>Intermediate Developer </Text>
+              </View>
+              <View style={{marginTop: 10}}>
+                <Text>Senior Developer </Text>
+              </View>
+            </View>
           </View>
-        </View>
-        <View style={styles.grid4}>{listSkills}</View>
-        <Text style={styles.time}>{job.postedAt}</Text>
-      </View>,
-    );
-  }
-  return (
-    <ScrollView contentContainerStyle={styles.container}>{listJobs}</ScrollView>
+        )}
+      </AppModal>
+    </>
   );
 }
+
+const {height, width} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
   container: {
@@ -182,7 +218,42 @@ const styles = StyleSheet.create({
   },
   time: {
     color: '#152536',
-    fontSize: 13,
+    fontSize: 16,
     paddingTop: 7,
+  },
+  btn: {
+    backgroundColor: '#DACFE5',
+    // height: 40,
+    width: 100,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  action: {
+    flexDirection: 'row',
+    padding: 5,
+  },
+  workInput: {
+    height: 36,
+    width: width * 0.6,
+    borderWidth: 0.6,
+    borderColor: '#5E5873',
+    borderRadius: 6,
+    marginRight: 7,
+    marginBottom: 6,
+    marginLeft: 8,
+    marginTop: 8,
+  },
+  profileEdit: {
+    marginBottom: 16,
+    width: '60%',
+    height: '32%',
+    backgroundColor: '#fff',
+    alignSelf: 'center',
+  },
+  drop: {
+    width: 20,
+    height: 10,
+    marginTop: 12,
   },
 });

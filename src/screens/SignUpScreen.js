@@ -11,7 +11,7 @@ import {
 import React, {useState} from 'react';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-
+import {signUpUser} from '../actions/auth';
 import Eye from '../assets/eye.png';
 import EyeActive from '../assets/eye-crossed.png';
 
@@ -39,11 +39,17 @@ export default function SignUpScreen({navigation}) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const signup = async payload => {
+    console.log(payload);
+    const response = await signUpUser(payload);
+    console.log(response);
+  };
+
   return (
     <Formik
       initialValues={{emailAddress: '', password: '', confirmPassword: ''}}
       validateOnMount={true}
-      onSubmit={() => navigation.navigate('AccountCreatedScreen')}
+      onSubmit={signup}
       validationSchema={signUpValidationSchema}>
       {({
         handleChange,

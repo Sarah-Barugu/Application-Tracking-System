@@ -13,6 +13,7 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 import Eye from '../assets/eye.png';
 import EyeActive from '../assets/eye-crossed.png';
+import {loginUser} from '../actions/auth';
 
 const loginValidationSchema = yup.object().shape({
   emailAddress: yup
@@ -31,12 +32,19 @@ const loginValidationSchema = yup.object().shape({
 
 export default function SignInScreen({navigation}) {
   const [showPassword, setShowPassword] = useState(false);
+  const login = async payload => {
+    const response = await loginUser(payload);
+    if (response && response.data) {
+      console.log(response.status);
+      navigation.navigate('BottomStackScreen');
+    }
+  };
 
   return (
     <Formik
       initialValues={{emailAddress: '', password: ''}}
       validateOnMount={true}
-      onSubmit={() => navigation.navigate('BottomStackScreen')}
+      onSubmit={login}
       validationSchema={loginValidationSchema}>
       {({
         handleChange,
@@ -159,7 +167,7 @@ const styles = StyleSheet.create({
     marginTop: 18,
   },
   text: {
-    FontSize: 14,
+    fontSize: 14,
     color: '#5E5873',
     marginTop: 18,
   },
