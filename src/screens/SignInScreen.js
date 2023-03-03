@@ -42,7 +42,10 @@ export default function SignInScreen({navigation}) {
 
   return (
     <Formik
-      initialValues={{emailAddress: '', password: ''}}
+      initialValues={{
+        emailAddress: 'Sarahtokoni23@gmail.com',
+        password: 'sarahA1',
+      }}
       validateOnMount={true}
       onSubmit={login}
       validationSchema={loginValidationSchema}>

@@ -11,6 +11,7 @@ import {
 import React from 'react';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import {forgotPassword} from '../actions/auth';
 
 const {height, width} = Dimensions.get('screen');
 
@@ -22,11 +23,19 @@ const forgotPasswordValidationSchema = yup.object().shape({
 });
 
 export default function ForgetPasswordScreen({navigation}) {
+  const forgotPWD = async payload => {
+    const response = await forgotPassword(payload);
+    if (response && response.data) {
+      console.log(response.status);
+      navigation.navigate('ResetLinkScreen');
+    }
+  };
+
   return (
     <Formik
       initialValues={{emailAddress: ''}}
       validateOnMount={true}
-      onSubmit={() => navigation.navigate('ResetLinkScreen')}
+      onSubmit={forgotPWD}
       validationSchema={forgotPasswordValidationSchema}>
       {({
         handleChange,

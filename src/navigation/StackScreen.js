@@ -15,6 +15,7 @@ import {
 } from '../screens';
 import SignUpScreen from '../screens/SignUpScreen';
 import AppliedJobDescScreen from '../screens/AppliedJobDescScreen';
+import JobDescScreen from '../screens/JobsDescScreen';
 
 const StackScreen = () => (
   <Navigator headerMode="none">
@@ -27,6 +28,7 @@ const StackScreen = () => (
     <Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
     <Screen name="NewPassCreatedScreen" component={NewPassCreatedScreen} />
     <Screen name="AppliedJobDescScreen" component={AppliedJobDescScreen} />
+    <Screen name="JobDescScreen" component={JobDescScreen} />
     <Screen name="BottomStackScreen" component={BottomStackScreen} />
   </Navigator>
 );

@@ -35,28 +35,22 @@ export const loginUser = async data => {
   }
 };
 
+export const forgotPassword = async data => {
+  try {
+    const result = await request({
+      route: '/auth/forgotPassword',
+      method: 'POST',
+      payload: data,
+    });
+    console.log('data', result);
+    return result;
+  } catch (error) {
+    console.log('error=================', error);
+    return error.response.data;
+  }
+};
+
 export default {
   signUpUser,
   loginUser,
 };
-
-// export const loginUser = async userData => {
-//   try {
-//     const response = await request({
-//       // route: 'client/v2/device-login',
-//       method: 'post',
-//       payload: userData,
-//     });
-//     const data = response.data;
-//     console.log('ISSUE', response);
-//     if (data && data.response) {
-//       const token = data.response.token;
-//       await AsyncStorage.setItem('token', token);
-//       await AsyncStorage.setItem('session', JSON.stringify(data.response));
-//       return response.data.response;
-//     }
-//     return response.data;
-//   } catch (err) {
-//     console.log('...Error Message', err.response);
-//   }
-// };

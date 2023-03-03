@@ -38,11 +38,14 @@ export default function MyHistoryScreen({navigation}) {
     const jobsData = await jobsHistory();
     console.log('We got jobs for you', jobsData.data);
     setJobs(jobsData.data);
-    setFilteredJobs(filtered);
+    setFilteredJobs(jobsData.data);
   };
   useEffect(() => {
-    fetchData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <>

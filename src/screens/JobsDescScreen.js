@@ -12,19 +12,9 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import {createAppliedJobs} from '../actions/appliedJobs';
-
-export default function AppliedJobDescScreen({navigation}) {
-  const {
-    item: {_id},
-  } = useRoute().params;
-  console.log(_id);
-
-  const jobApplication = async id => {
-    const jobsData = await createAppliedJobs(id);
-    console.log('We got jobs for you', jobsData);
-  };
-
+export default function JobDescScreen({navigation}) {
+  // const {item} = useRoute().params;
+  // console.log(item);
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.container}>
@@ -40,8 +30,8 @@ export default function AppliedJobDescScreen({navigation}) {
             <Text style={{color: '#000000', fontSize: 16}}> Back </Text>
           </View>
           <View style={styles.applied}>
-            <TouchableOpacity onPress={() => jobApplication(_id)}>
-              <Text>{true ? 'Apply' : 'Applied'}</Text>
+            <TouchableOpacity>
+              <Text>Applied</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -37,11 +37,14 @@ export default function JobsScreen({navigation}) {
     const jobsData = await getJobs();
     console.log('We got jobs for you', jobsData.data);
     setJobs(jobsData.data);
-    setFilteredJobs(filtered);
+    setFilteredJobs(jobsData.data);
   };
   useEffect(() => {
-    fetchData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <>
@@ -86,10 +89,12 @@ export default function JobsScreen({navigation}) {
                 }}></View>
               <View styles={styles.logoAreaText}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('AppliedJobDescScreen')}>
+                  onPress={() =>
+                    navigation.navigate('AppliedJobDescScreen', {item})
+                  }>
                   <Text style={styles.title}>{item.companyName}</Text>
                 </TouchableOpacity>
-                <Text style={styles.role}>{item.jobRole}</Text>
+                <Text style={styles.role}>{item && item.jobRole}</Text>
               </View>
             </View>
             <View style={styles.boxDirection}>

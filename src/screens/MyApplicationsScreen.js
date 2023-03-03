@@ -13,11 +13,11 @@ import {
 import moment from 'moment';
 import {getAppliedJobs} from '../actions/appliedJobs';
 import {AppModal} from '../components';
+import {useRoute} from '@react-navigation/native';
 
 export default function MyApplicationsScreen({navigation}) {
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
-
   const [isVisible, setIsVisible] = useState(false);
   const [contentType, setContentType] = useState('Filter');
 
@@ -40,9 +40,13 @@ export default function MyApplicationsScreen({navigation}) {
     setJobs(jobsData.data);
     setFilteredJobs(jobsData.data);
   };
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <>
@@ -87,7 +91,10 @@ export default function MyApplicationsScreen({navigation}) {
                     justifyContent: 'space-around',
                   }}></View>
                 <View styles={styles.logoAreaText}>
-                  <Text style={styles.title}>{item.companyName}</Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('JobDescScreen')}>
+                    <Text style={styles.title}>{item.companyName}</Text>
+                  </TouchableOpacity>
                   <Text style={styles.role}>{item.jobRole}</Text>
                 </View>
               </View>

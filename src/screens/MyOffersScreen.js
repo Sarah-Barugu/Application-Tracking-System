@@ -1,103 +1,18 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ScrollView,
   View,
   StyleSheet,
+  FlatList,
   Text,
   Image,
   TouchableOpacity,
 } from 'react-native';
 import {AppModal} from '../components';
+import {jobOffers} from '../actions/offer';
 
 export default function MyOffersScreen({navigation}) {
-  const jobs = [
-    {
-      companyLogo: require('../assets/volks.png'),
-      companyName: 'ABC Company',
-      jobRole: 'Senior Level Product Designer',
-      location: 'United Arab Emirates',
-      salary: '1,000,000.00',
-      skills: [
-        'Figma',
-        'Sketch',
-        'Adobe XD',
-        'illustrator',
-        'Photoshop',
-        'inVision',
-      ],
-    },
-    {
-      companyLogo: require('../assets/hyundai.png'),
-      companyName: 'JKLM Company',
-      jobRole: 'Junior Level Software Developer',
-      location: 'South Africa',
-      salary: '500,000.00',
-      skills: ['Javascript', 'Vue js', 'React Js', 'Photoshop'],
-    },
-  ];
-  const listJobs = [];
-
-  for (let index = 0; index < jobs.length; index++) {
-    const job = jobs[index];
-    const skills = job.skills;
-    const listSkills = [];
-    for (let index2 = 0; index2 < skills.length; index2++) {
-      const skill = skills[index2];
-
-      listSkills.push(
-        <Text key={index2} style={styles.skills}>
-          {skill}
-        </Text>,
-      );
-    }
-    listJobs.push(
-      <View key={index} style={styles.box}>
-        <View style={styles.logoArea}>
-          <Image
-            // source={{uri: job.img}}
-            source={job.companyLogo}
-            style={styles.png}
-            resizeMode="contain"
-          />
-          <View styles={styles.logoAreaText}>
-            <Text style={styles.title}>{job.companyName}</Text>
-            <Text style={styles.role}>{job.jobRole}</Text>
-          </View>
-        </View>
-        <View style={styles.boxDirection}>
-          <View style={styles.miniBoxes}>
-            <Image
-              source={require('../assets/map-pin.png')}
-              style={styles.icon}
-              resizeMode="contain"
-            />
-            <Text style={styles.content}>{job.location}</Text>
-          </View>
-          <View style={styles.miniBoxes}>
-            <Text style={styles.content}>&#8358; {job.salary}</Text>
-          </View>
-        </View>
-        <View style={styles.grid4}>{listSkills}</View>
-        <View>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => {
-              handleModal();
-              setContentType('Filter');
-            }}>
-            <View style={styles.action}>
-              <Text style={styles.time}>Actions</Text>
-              <Image
-                source={require('../assets/arrowDown.png')}
-                style={styles.drop}
-                resizeMode="contain"
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>,
-    );
-  }
+  const [jobs, setJobs] = useState([]);
 
   const [isVisible, setIsVisible] = useState(false);
   const [contentType, setContentType] = useState('Filter');
@@ -106,11 +21,88 @@ export default function MyOffersScreen({navigation}) {
     setIsVisible(!isVisible);
   };
 
+  const fetchData = async () => {
+    const jobsData = await jobOffers();
+    // console.log('We got jobs for you', jobsData.data);
+    setJobs(jobsData.data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
-      <ScrollView contentContainerStyle={styles.container}>
-        {listJobs}
-      </ScrollView>
+      <FlatList
+        data={jobs}
+        // keyExtractor={item => item.id.toString()}
+        renderItem={({item: data}) => {
+          const item = data.jobId;
+          if (!item) return null;
+          console.log(item);
+          return (
+            <TouchableOpacity>
+              <View style={styles.box}>
+                <View style={styles.logoArea}>
+                  <Image
+                    source={{uri: item.companyLogo}}
+                    style={styles.png}
+                    resizeMode="contain"
+                  />
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-around',
+                    }}></View>
+                  <View styles={styles.logoAreaText}>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('JobDescScreen')}>
+                      <Text style={styles.title}>{item.companyName}</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.role}>{item.jobRole}</Text>
+                  </View>
+                </View>
+                <View style={styles.boxDirection}>
+                  <View style={styles.miniBoxes}>
+                    <Image
+                      source={require('../assets/map-pin.png')}
+                      style={styles.icon}
+                      resizeMode="contain"
+                    />
+                    <Text style={styles.content}>{item.location}</Text>
+                  </View>
+                  <View style={styles.miniBoxes}>
+                    <Text style={styles.content}>&#8358; {item.salary}</Text>
+                  </View>
+                </View>
+                {/* <View style={styles.grid4}>
+                {item.skills.map(skill => (
+                  <View>
+                    <Text style={styles.skills}>{skill}</Text>
+                  </View>
+                ))}
+              </View> */}
+                <View>
+                  <TouchableOpacity
+                    style={styles.btn}
+                    onPress={() => {
+                      handleModal();
+                      setContentType('Filter');
+                    }}>
+                    <View style={styles.action}>
+                      <Text style={styles.time}>Actions</Text>
+                      <Image
+                        source={require('../assets/arrowDown.png')}
+                        style={styles.drop}
+                        resizeMode="contain"
+                      />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        }}
+      />
       <AppModal isVisible={isVisible} onBackdropPress={handleModal}>
         {contentType == 'Filter' && (
           <View style={styles.profileEdit}>
